@@ -1,0 +1,7 @@
+.gitignore
+.idea
+docs
+node_modules
+.DS_Store
+.serverless
+.webpack
