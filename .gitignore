@@ -1,7 +1,8 @@
 .gitignore
 .idea
-docs
-node_modules
 .DS_Store
 .serverless
 .webpack
+docs
+node_modules
+logs

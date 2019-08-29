@@ -1,0 +1,16 @@
+{
+  "categories": {
+    "default": { "appenders": [ "console", "file"], "level": "info" }
+  },
+  "appenders": {
+    "console": {
+      "type": "console"
+    },
+    "file": {
+      "type": "dateFile",
+      "filename": "scripts/logs/scripts",
+      "pattern": "-yyyyMMdd.log",
+      "alwaysIncludePattern": true
+    }
+  }
+}
