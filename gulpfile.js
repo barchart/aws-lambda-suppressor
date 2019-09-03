@@ -5,7 +5,8 @@ const bump = require('gulp-bump'),
 	gitStatus = require('git-get-status'),
 	gulp = require('gulp'),
 	jshint = require('gulp-jshint'),
-	runSequence = require('run-sequence');
+	runSequence = require('run-sequence'),
+	util = require('gulp-util');
 
 function getVersionFromPackage() {
 	return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
