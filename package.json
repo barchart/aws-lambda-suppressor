@@ -19,10 +19,14 @@
     "@barchart/common-node-js": "~3.3.0"
   },
   "devDependencies": {
+    "git-get-status": "^1.0.5",
     "gulp": "~3.9.0",
+    "gulp-bump": "~1.0.0",
+    "gulp-git": "~2.8.0",
     "gulp-jshint": "~2.1.0",
-    "jshint": "2.9.5"
+    "jshint": "2.9.5",
+    "run-sequence": "~1.1.4"
   },
-  "license": "MIT",
+  "license": "UNLICENSED",
   "private": true
 }
