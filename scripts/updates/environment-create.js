@@ -8,7 +8,7 @@ const startup = (() => {
 	const DynamoProvider = require('@barchart/common-node-js/aws/DynamoProvider'),
 		Environment = require('@barchart/common-node-js/environment/Environment');
 
-	const LambdaInvocationsTable = require('./../../lib/dynamo/data/LambdaInvocationsTable');
+	const LambdaInvocationsTable = require('../../lib/dynamo/tables/LambdaInvocationsTable');
 
 	const NAMES = {
 		AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID',
