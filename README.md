@@ -7,4 +7,4 @@ The `DynamoLambdaValidator` inherits `LambdaValidator` (a class in the [@barchar
 
 ## Operation
 
-Each time a Lambda function is invoked, a record with the invoking event's identifier is written to a DyanmoDB table (using a conditional write). If the write fails, we know this event has already been processed and the Lambda function's processing should stop.
+Each time a Lambda function is invoked, a record keyed by the invoking event's identifier is written to a DyanmoDB table (using a conditional write). If the write fails, we know this event has already been processed and the Lambda function's processing should stop.
