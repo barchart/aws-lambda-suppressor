@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@barchart/common-js": "~3.3.0",
-    "@barchart/common-node-js": "git@github.com:barchart/barchart-common-node-js.git#feat/dynamodb-TTL"
+    "@barchart/common-node-js": "git@github.com:barchart/barchart-common-node-js.git#feat/dynamodb-TTL",
+    "stream-batch": "^1.0.0"
   },
   "devDependencies": {
     "git-get-status": "^1.0.5",

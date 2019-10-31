@@ -1,12 +1,25 @@
 const startup = (() => {
 	'use strict';
 
-	const log4js = require('log4js'),
+	const batch = require('stream-batch'),
+		log4js = require('log4js'),
 		path = require('path'),
 		process = require('process');
 
-	const DynamoProvider = require('@barchart/common-node-js/aws/DynamoProvider'),
-		Environment = require('@barchart/common-node-js/environment/Environment');
+	const promise = require('@barchart/common-js/lang/promise'),
+		Timestamp = require('@barchart/common-js/lang/Timestamp');
+
+	const DelegateTransformation = require('@barchart/common-node-js/stream/transformations/DelegateTransformation'),
+		DynamoProvider = require('@barchart/common-node-js/aws/DynamoProvider'),
+		DynamoQueryReader = require('@barchart/common-node-js/aws/dynamo/stream/DynamoQueryReader'),
+		DynamoScanReader = require('@barchart/common-node-js/aws/dynamo/stream/DynamoScanReader'),
+		DynamoStreamWriter = require('@barchart/common-node-js/aws/dynamo/stream/DynamoStreamWriter'),
+		Environment = require('@barchart/common-node-js/environment/Environment'),
+		ObjectTransformer = require('@barchart/common-node-js/stream/ObjectTransformer'),
+		OperatorType = require('@barchart/common-node-js/aws/dynamo/query/definitions/OperatorType'),
+		QueryBuilder = require('@barchart/common-node-js/aws/dynamo/query/builders/QueryBuilder'),
+		ScanBuilder = require('@barchart/common-node-js/aws/dynamo/query/builders/ScanBuilder'),
+		SplitTransformer = require('@barchart/common-node-js/stream/SplitTransformer');
 
 	const LambdaInvocationsTable = require('../../lib/dynamo/tables/LambdaInvocationsTable');
 
@@ -62,7 +75,7 @@ const startup = (() => {
 		logger.info('Starting [ update/environment-create ] script, run', startTime);
 
 		const description = [
-			'Creates DynamoDB tables for event system'
+			'Updates system expiration',
 		];
 
 		const drawLine = (length) => {
@@ -105,7 +118,7 @@ const startup = (() => {
 			return;
 		}
 
-		Promise.resolve({})
+		Promise.resolve({ })
 			.then((context) => {
 				logger.info('Beginning environment check (and creation)');
 
@@ -126,7 +139,57 @@ const startup = (() => {
 				return Promise.all([
 					lambdaInvocationsTable.start(false)
 				]).then(() => {
+					context.table = lambdaInvocationsTable;
+
 					return context;
+				});
+			}).then((context) => {
+				let count = 0;
+
+				return promise.build((resolveCallback, rejectCallback) => {
+					const builder = ScanBuilder.targeting(context.table.definition)
+						.withDescription('Scan all items without expiration')
+						.withFilterBuilder((fb) => {
+							fb.withExpression('system.expiration', OperatorType.ATTRIBUTE_NOT_EXISTS);
+						});
+
+					const reader = new DynamoScanReader(builder.scan, context.dynamo);
+
+					const splitter = new SplitTransformer();
+
+					const processor =  ObjectTransformer.define('', false)
+						.addTransformation(new DelegateTransformation((item) => {
+							const day = 24 * 60 * 60 * 1000;
+							const expiresIn = 30 * day;
+
+							count += 1;
+
+							if (count % 100 === 0) {
+								logger.info(`Processed [ ${count} ] items`);
+							}
+
+							const toSeconds = timestamp => Math.floor(timestamp / 1000);
+
+							item.system.expiration = Timestamp.parse(toSeconds(item.system.timestamp.timestamp + expiresIn));
+
+							return item;
+						}));
+
+					const batcher = batch({ maxItems: 25 });
+
+					const writer = new DynamoStreamWriter(context.table.definition, context.dynamo);
+
+					writer.on('finish', () => {
+						logger.info(`Finished, updated [ ${count} ] items.`);
+
+						resolveCallback(context);
+					});
+
+					reader
+						.pipe(splitter)
+						.pipe(processor)
+						.pipe(batcher)
+						.pipe(writer);
 				});
 			}).then((context) => {
 				logger.info('Script finishing normally');
@@ -138,13 +201,13 @@ const startup = (() => {
 
 				exit(1);
 			});
-	} catch (e) {
-		try {
-			logger.error('Script threw an unhandled error. This should never happen.', e);
 		} catch (e) {
-			console.log('Script threw an unhandled error. This should never happen.', e);
-		}
+			try {
+				logger.error('Script threw an unhandled error. This should never happen.', e);
+			} catch (e) {
+				console.log('Script threw an unhandled error. This should never happen.', e);
+			}
 
-		exit(1);
-	}
+			exit(1);
+		}
 })();
