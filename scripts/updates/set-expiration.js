@@ -6,18 +6,15 @@ const startup = (() => {
 		path = require('path'),
 		process = require('process');
 
-	const promise = require('@barchart/common-js/lang/promise'),
-		Timestamp = require('@barchart/common-js/lang/Timestamp');
+	const promise = require('@barchart/common-js/lang/promise');
 
 	const DelegateTransformation = require('@barchart/common-node-js/stream/transformations/DelegateTransformation'),
 		DynamoProvider = require('@barchart/common-node-js/aws/DynamoProvider'),
-		DynamoQueryReader = require('@barchart/common-node-js/aws/dynamo/stream/DynamoQueryReader'),
 		DynamoScanReader = require('@barchart/common-node-js/aws/dynamo/stream/DynamoScanReader'),
 		DynamoStreamWriter = require('@barchart/common-node-js/aws/dynamo/stream/DynamoStreamWriter'),
 		Environment = require('@barchart/common-node-js/environment/Environment'),
 		ObjectTransformer = require('@barchart/common-node-js/stream/ObjectTransformer'),
 		OperatorType = require('@barchart/common-node-js/aws/dynamo/query/definitions/OperatorType'),
-		QueryBuilder = require('@barchart/common-node-js/aws/dynamo/query/builders/QueryBuilder'),
 		ScanBuilder = require('@barchart/common-node-js/aws/dynamo/query/builders/ScanBuilder'),
 		SplitTransformer = require('@barchart/common-node-js/stream/SplitTransformer');
 
@@ -150,27 +147,20 @@ const startup = (() => {
 					const builder = ScanBuilder.targeting(context.table.definition)
 						.withDescription('Scan all items without expiration')
 						.withFilterBuilder((fb) => {
-							fb.withExpression('system.expiration', OperatorType.ATTRIBUTE_NOT_EXISTS);
+							fb.withExpression('system.expiration', OperatorType.ATTRIBUTE_EXISTS);
 						});
 
 					const reader = new DynamoScanReader(builder.scan, context.dynamo);
 
 					const splitter = new SplitTransformer();
 
-					const processor =  ObjectTransformer.define('', false)
+					const processor =  ObjectTransformer.define('Touch', false)
 						.addTransformation(new DelegateTransformation((item) => {
-							const day = 24 * 60 * 60 * 1000;
-							const expiresIn = 30 * day;
-
 							count += 1;
 
 							if (count % 100 === 0) {
 								logger.info(`Processed [ ${count} ] items`);
 							}
-
-							const toSeconds = timestamp => Math.floor(timestamp / 1000);
-
-							item.system.expiration = Timestamp.parse(toSeconds(item.system.timestamp.timestamp + expiresIn));
 
 							return item;
 						}));
