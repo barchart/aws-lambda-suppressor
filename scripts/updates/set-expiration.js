@@ -147,7 +147,7 @@ const startup = (() => {
 					const builder = ScanBuilder.targeting(context.table.definition)
 						.withDescription('Scan all items without expiration')
 						.withFilterBuilder((fb) => {
-							fb.withExpression('system.expiration', OperatorType.ATTRIBUTE_EXISTS);
+							fb.withExpression('system.expiration', OperatorType.ATTRIBUTE_NOT_EXISTS);
 						});
 
 					const reader = new DynamoScanReader(builder.scan, context.dynamo);
@@ -158,7 +158,7 @@ const startup = (() => {
 						.addTransformation(new DelegateTransformation((item) => {
 							count += 1;
 
-							if (count % 100 === 0) {
+							if (count % 10000 === 0) {
 								logger.info(`Processed [ ${count} ] items`);
 							}
 
