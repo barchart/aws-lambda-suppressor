@@ -1,4 +1,4 @@
-# barchart/aws-lambda-suppressor
+# @barchart/aws-lambda-suppressor
 
 A JavaScript utility for tracking and suppressing duplicate AWS Lambda invocations.
 
