@@ -4,7 +4,7 @@ A JavaScript utility for tracking and suppressing duplicate AWS Lambda invocatio
 
 ## Operation
 
-When an AWS Lambda functions is invoked, it's passed an `event` object. The ```event``` may contain a unique identifier.
+When a [Lambda function at AWS](https://aws.amazon.com/lambda/) is invoked, it's passed an `event` object. The ```event``` may contain a unique identifier.
 
 If the event has a unique identifier, the ```DynamoLambdaValidator``` will attempt to create a record in a DynamoDB table, using a _conditional_ write. If the write fails, we know this event has already been processed and the Lambda function's processing should stop.
 
