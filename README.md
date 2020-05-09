@@ -10,6 +10,6 @@ If a unique identifier can be determined, the [```DynamoLambdaValidator```](http
 
 ### Usage
 
-The [```DynamoLambdaValidator```](https://github.com/barchart/aws-lambda-suppressor/blob/master/lib/dynamo/DynamoLambdaValidator.js) extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js) -- a class from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
+The ```DynamoLambdaValidator``` extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js) -- a class from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
-As a result, the ```DynamoLambdaValidator``` can be plugged into the [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js), by overriding its ```getValidator``` function.
+As a result, the ```DynamoLambdaValidator``` can be plugged into the [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
