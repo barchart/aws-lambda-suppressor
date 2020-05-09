@@ -1,34 +1,38 @@
 {
-	"name": "@barchart/aws-lambda-suppressor",
-	"version": "1.1.0",
-	"description": "Utilities for tracking and suppressing AWS Lambda invocations",
-	"author": {
-		"name": "Bryan Ingle",
-		"email": "bryan.ingle@barchart.com",
-		"url": "http://www.barchart.com"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+ssh://git@github.com/barchart/aws-lambda-suppressor.git"
-	},
-	"dependencies": {
-		"@barchart/common-js": "^3.5.1",
-		"@barchart/common-node-js": "^3.5.1",
-		"stream-batch": "1.0.0"
-	},
-	"devDependencies": {
-		"git-get-status": "^1.0.5",
-		"gulp": "^4.0.2",
-		"gulp-bump": "~1.0.0",
-		"gulp-git": "^2.5.1",
-		"gulp-jasmine": "^2.2.1",
-		"gulp-jshint": "~2.1.0",
-		"gulp-rename": "^1.4.0",
-		"gulp-replace": "^0.5.4",
-		"jshint": "2.9.5"
-	},
-	"license": "UNLICENSED"
+  "name": "@barchart/aws-lambda-suppressor",
+  "version": "1.1.0",
+  "description": "Utilities for tracking and suppressing AWS Lambda invocations",
+  "author": {
+	"name": "Bryan Ingle",
+	"email": "bryan.ingle@barchart.com",
+	"url": "http://www.barchart.com"
+  },
+  "scripts": {
+	"test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+	"type": "git",
+	"url": "git+ssh://git@github.com/barchart/aws-lambda-suppressor.git"
+  },
+  "dependencies": {
+	"@barchart/common-js": "^3.5.1",
+	"@barchart/common-node-js": "^3.5.1",
+	"stream-batch": "1.0.0"
+  },
+  "devDependencies": {
+	"git-get-status": "^1.0.5",
+	"gulp": "^4.0.2",
+	"gulp-bump": "~1.0.0",
+	"gulp-git": "^2.5.1",
+	"gulp-jasmine": "^2.2.1",
+	"gulp-jshint": "~2.1.0",
+	"gulp-rename": "^1.4.0",
+	"gulp-replace": "^0.5.4",
+	"jshint": "2.9.5"
+  },
+  "license": "MIT",
+  "bugs": {
+	"url": "https://github.com/barchart/aws-lambda-suppressor/issues"
+  },
+  "homepage": "https://github.com/barchart/aws-lambda-suppressor"
 }
