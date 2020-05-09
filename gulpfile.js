@@ -4,31 +4,25 @@ const bump = require('gulp-bump'),
 	git = require('gulp-git'),
 	gitStatus = require('git-get-status'),
 	gulp = require('gulp'),
-	jshint = require('gulp-jshint'),
-	runSequence = require('run-sequence'),
-	util = require('gulp-util');
+	jshint = require('gulp-jshint');
 
 function getVersionFromPackage() {
 	return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
 }
 
-gulp.task('lint', () => {
-	return gulp.src([ './**/*.js', '!./node_modules/**' ])
-		.pipe(jshint({ esversion: 6 }))
-		.pipe(jshint.reporter('default'));
-});
-
-gulp.task('ensure-clean-working-directory', () => {
-	gitStatus(function(err, status) {
+gulp.task('ensure-clean-working-directory', (cb) => {
+	gitStatus((err, status) => {
 		if (err, !status.clean) {
 			throw new Error('Unable to proceed, your working directory is not clean.');
 		}
+
+		cb();
 	});
 });
 
 gulp.task('bump-version', () => {
-	return gulp.src(['./package.json'])
-		.pipe(bump({type: 'patch'}).on('error', util.log))
+	return gulp.src([ './package.json' ])
+		.pipe(bump({ type: 'patch' }))
 		.pipe(gulp.dest('./'));
 });
 
@@ -54,23 +48,19 @@ gulp.task('create-tag', (cb) => {
 	});
 });
 
-gulp.task('release', (callback) => {
-	runSequence(
-		'ensure-clean-working-directory',
-		'bump-version',
-		'commit-changes',
-		'push-changes',
-		'create-tag',
+gulp.task('release', gulp.series(
+	'ensure-clean-working-directory',
+	'bump-version',
+	'commit-changes',
+	'push-changes',
+	'create-tag'
+));
 
-		function (error) {
-			if (error) {
-				console.log(error.message);
-			} else {
-				console.log('Release complete');
-			}
-
-			callback(error);
-		});
+gulp.task('lint', () => {
+	return gulp.src(['./lib/**/*.js', './scripts/**/*.js', './test/specs/**/*.js'])
+		.pipe(jshint({'esversion': 6}))
+		.pipe(jshint.reporter('default'))
+		.pipe(jshint.reporter('fail'));
 });
 
-gulp.task('default', ['lint']);
+gulp.task('default', gulp.series('lint'));
