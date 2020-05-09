@@ -10,7 +10,7 @@ When a [Lambda function at AWS](https://aws.amazon.com/lambda/) is invoked, it's
 
 If a unique identifier can be determined, the [```DynamoLambdaValidator```](https://github.com/barchart/aws-lambda-suppressor/blob/master/lib/dynamo/DynamoLambdaValidator.js) will attempt to create a record in a DynamoDB table, using a _conditional_ write. If the write fails, we know this event has already been processed and the Lambda function's processing should stop.
 
-### Usage
+## Usage
 
 The ```DynamoLambdaValidator``` extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js) -- a class from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
