@@ -6,7 +6,7 @@ A *public* JavaScript utility for tracking and suppressing duplicate invocations
 
 ### Overview
 
-When a Lambda Function is invoked, it's passed an ```event``` object. If a unique identifier can be extracted from an ```event``` object, the [```DynamoLambdaValidator```](./lib/dynamo/DynamoLambdaValidator.js) will attempt to create a record in DynamoDB, using a _conditional_ write. If the write fails, we know another Lambda Function has already processed this event and the current Lambda Function should abort its processing.
+When a Lambda Function is invoked, it's passed an ```event``` object. If a unique identifier can be extracted from the ```event``` object, the [```DynamoLambdaValidator```](./lib/dynamo/DynamoLambdaValidator.js) will attempt to create a record in DynamoDB, using a _conditional_ write. If the write fails, we know another Lambda Function has already processed this event and the current Lambda Function should abort its processing.
 
 ### Usage
 
