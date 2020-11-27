@@ -6,15 +6,14 @@ A *public* JavaScript utility for tracking and suppressing duplicate invocations
 
 ### Operation
 
-When a [Lambda Function] is invoked, it's passed an ```event``` object. This ```event``` may contain a unique identifier. 
-
-If a unique identifier can be extracted from an ```event```, the [```DynamoLambdaValidator```](./lib/dynamo/DynamoLambdaValidator.js) will attempt to create a record in a DynamoDB table, using a _conditional_ write. If the write fails, we know another Lambda Function has processed this event and the current Lambda Function should abort its processing.
+When a Lambda Function is invoked, it's passed an ```event``` object. This ```event``` may contain a unique identifier. If a unique identifier can be extracted from an ```event```, the [```DynamoLambdaValidator```](./lib/dynamo/DynamoLambdaValidator.js) will attempt to create save it to DynamoDB, using a _conditional_ write. If the write fails, we know another Lambda Function has processed this event (and the current Lambda Function should abort its processing).
 
 ### Usage
 
-The ```DynamoLambdaValidator``` extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js) -- a class from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
+This utility relies heavily on code from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
-As a result, the ```DynamoLambdaValidator``` can be plugged into a [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
+* The ```DynamoLambdaValidator``` class extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js).
+* The ```DynamoLambdaValidator``` class can be plugged into a [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
 
 ### License
 
