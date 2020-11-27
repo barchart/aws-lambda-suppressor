@@ -10,7 +10,7 @@ When a Lambda Function is invoked, it's passed an ```event``` object. If a uniqu
 
 ### Usage
 
-This utility relies heavily on code from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
+This package relies heavily on code from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
 * ```DynamoLambdaValidator``` extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js).
 * ```DynamoLambdaValidator``` can be plugged into a [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
