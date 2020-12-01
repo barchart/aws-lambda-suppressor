@@ -9,7 +9,7 @@ A *public* JavaScript package for tracking and suppressing duplicate invocations
 * Each Lambda invocation includes an ```event``` object.
 * Depending on the ```event``` source, a unique identifier can usually be extracted.
 * The [```DynamoMessageValidator```](./lib/dynamo/DynamoMessageValidator.js) saves these unique identifiers to DynamoDB (using a conditional writes).
-* Failure indicates another Lambda has already processed the same event (and the current function should abort).
+* Failure indicates another Lambda has already processed the same event (and processing should be suppressed).
 
 ### Usage
 
