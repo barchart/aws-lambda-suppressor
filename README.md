@@ -6,14 +6,14 @@ A *public* JavaScript package for tracking and suppressing duplicate invocations
 
 ### Overview
 
-When a Lambda Function is invoked, it's passed an ```event``` object. If a unique identifier can be extracted from the ```event``` object, the [```DynamoLambdaValidator```](./lib/dynamo/DynamoLambdaValidator.js) will attempt to create a record in DynamoDB, using a _conditional_ write. If the write fails, we know another Lambda Function has already processed this event and the current Lambda Function should abort its processing.
+When a Lambda Function is invoked, it's passed an ```event``` object. If a unique identifier can be extracted from the ```event``` object, the [```DynamoMessageValidator```](./lib/dynamo/DynamoMessageValidator.js) will attempt to create a record in DynamoDB, using a _conditional_ write. If the write fails, we know another Lambda Function has already processed this event and the current Lambda Function should abort its processing.
 
 ### Usage
 
 This package relies heavily on code from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
-* ```DynamoLambdaValidator``` extends [```LambdaValidator```](https://github.com/barchart/barchart-common-node-js/blob/master/aws/lambda/LambdaValidator.js).
-* ```DynamoLambdaValidator``` can be plugged into a [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
+* First, create a [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) and add a ```DynamoMessageValidator```` instance.
+* Then, plug the [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) into your [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
 
 ### License
 
