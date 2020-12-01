@@ -4,15 +4,18 @@
 
 A *public* JavaScript package for tracking and suppressing duplicate invocations of [AWS Lambda Functions](https://aws.amazon.com/lambda/).
 
-### Overview
+### Workflow
 
-When a Lambda Function is invoked, it's passed an ```event``` object. If a unique identifier can be extracted from the ```event``` object, the [```DynamoMessageValidator```](./lib/dynamo/DynamoMessageValidator.js) will attempt to create a record in DynamoDB, using a _conditional_ write. If the write fails, we know another Lambda Function has already processed this event and the current Lambda Function should abort its processing.
+* An ```event``` object is passed to user code each time a Lambda Function is invoked.
+* In most cases, a unique identifier can be extracted from the ```event``` object.
+* If a unique identifier can be determined, the the [```DynamoMessageValidator```](./lib/dynamo/DynamoMessageValidator.js) will attempt to create a record in DynamoDB, using a _conditional_ write.
+* If the conditional write fails, we know another Lambda Function has already processed this event (and current processing should abort).
 
 ### Usage
 
 This package relies heavily on code from the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
-* First, create a [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) and add a ```DynamoMessageValidator```` instance.
+* First, create a [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) and add a ```DynamoMessageValidator``` instance.
 * Then, plug the [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) into your [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
 
 ### License
