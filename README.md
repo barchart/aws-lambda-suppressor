@@ -13,7 +13,7 @@ A *public* JavaScript package for tracking and suppressing duplicate invocations
 
 ### Usage
 
-This package is typically used with a simple framework in the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
+This package is typically used with a simple framework found in the [@barchart/common-node-js](https://github.com/barchart/common-node-js) library.
 
 * First, create a [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) and add a ```DynamoMessageValidator``` instance.
 * Then, plug the [```LambdaEventValidator```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/validators/LambdaEventValidator.js) into your [```LambdaHelper```](https://github.com/barchart/common-node-js/blob/master/aws/lambda/LambdaHelper.js) by overriding its ```getValidator``` function.
