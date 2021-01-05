@@ -2,8 +2,7 @@ const exec = require('child_process').exec;
 
 const fs = require('fs');
 
-const bump = require('gulp-bump'),
-	git = require('gulp-git'),
+const git = require('gulp-git'),
 	gitStatus = require('git-get-status'),
 	gulp = require('gulp'),
 	jshint = require('gulp-jshint'),
