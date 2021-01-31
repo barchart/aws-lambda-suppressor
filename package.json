@@ -15,8 +15,8 @@
     "url": "git+ssh://git@github.com/barchart/aws-lambda-suppressor.git"
   },
   "dependencies": {
-    "@barchart/common-js": "^3.26.2",
-    "@barchart/common-node-js": "^3.26.2",
+    "@barchart/common-js": "^4.1.0",
+    "@barchart/common-node-js": "^4.1.0",
     "stream-batch": "1.0.0"
   },
   "devDependencies": {
