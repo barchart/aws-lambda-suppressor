@@ -1,4 +1,4 @@
-const startup = (() => {
+(() => {
 	'use strict';
 
 	const batch = require('stream-batch'),
