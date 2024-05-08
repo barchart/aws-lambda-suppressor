@@ -33,8 +33,6 @@
 	];
 
 	const REQUIRED = [
-		NAMES.AWS_ACCESS_KEY_ID,
-		NAMES.AWS_SECRET_ACCESS_KEY,
 		NAMES.AWS_DYNAMO_PREFIX
 	];
 
@@ -134,7 +132,7 @@
 				const lambdaInvocationsTable = new LambdaInvocationsTable(context.dynamo);
 
 				return Promise.all([
-					lambdaInvocationsTable.start(false)
+					lambdaInvocationsTable.start(true)
 				]).then(() => {
 					context.table = lambdaInvocationsTable;
 
@@ -142,6 +140,7 @@
 				});
 			}).then((context) => {
 				let count = 0;
+				let newest = 0;
 
 				return promise.build((resolveCallback, rejectCallback) => {
 					const builder = ScanBuilder.targeting(context.table.definition)
@@ -158,6 +157,10 @@
 						.addTransformation(new DelegateTransformation((item) => {
 							count += 1;
 
+							if (item.system.timestamp && item.system.timestamp.timestamp > newest) {
+								newest = item.system.timestamp.timestamp;
+							}
+
 							if (count % 10000 === 0) {
 								logger.info(`Processed [ ${count} ] items`);
 							}
@@ -170,7 +173,7 @@
 					const writer = new DynamoStreamWriter(context.table.definition, context.dynamo);
 
 					writer.on('finish', () => {
-						logger.info(`Finished, updated [ ${count} ] items.`);
+						logger.info(`Finished, updated [ ${count} ] items with newest [ ${newest} ].`);
 
 						resolveCallback(context);
 					});
