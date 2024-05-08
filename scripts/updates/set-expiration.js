@@ -43,7 +43,7 @@
 	const startTime = (new Date()).getTime();
 
 	const exit = (code) => {
-		logger.info('Stopping [ update/environment-create ] script, run', startTime);
+		logger.info('Stopping [ update/set-expiration ] script, run', startTime);
 
 		log4js.shutdown(() => {
 			process.exit(code || 0);
@@ -69,7 +69,7 @@
 	});
 
 	try {
-		logger.info('Starting [ update/environment-create ] script, run', startTime);
+		logger.info('Starting [ update/set-expiration ] script, run', startTime);
 
 		const description = [
 			'Updates system expiration',
@@ -117,7 +117,7 @@
 
 		Promise.resolve({ })
 			.then((context) => {
-				logger.info('Beginning environment check (and creation)');
+				logger.info('Beginning scan of all items without expiration');
 
 				const dynamo = new DynamoProvider({
 					region: process.env[NAMES.AWS_REGION] || 'us-east-1',
