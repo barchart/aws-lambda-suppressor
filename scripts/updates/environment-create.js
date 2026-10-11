@@ -110,8 +110,9 @@
 				logger.info('Beginning environment check (and creation)');
 
 				const dynamo = new DynamoProvider({
-					region: process.env[NAMES.AWS_REGION] || 'us-east-1',
 					prefix: process.env[NAMES.AWS_DYNAMO_PREFIX]
+				}, {
+					region: process.env[NAMES.AWS_REGION] || 'us-east-1'
 				});
 
 				return dynamo.start()
